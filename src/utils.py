@@ -5,6 +5,7 @@ def is_factor_or_multiple(value, compared_value) -> bool:
     else:
         return not bool(value % compared_value)
 
+
 def is_prime(value) -> bool:
     if value > 1:
         for i in range(2, value):

@@ -1,6 +1,7 @@
 from inspect import cleandoc
 from utils import *
 
+
 class PNTState():
     """Represents a pick numbered-tokens state"""
 

@@ -1,5 +1,6 @@
 from pnt_state import PNTState
 
+
 def main():
     state = PNTState(7, 0, [], 4)
     print(state)
@@ -23,6 +24,7 @@ def main():
             print("Possible token(s):", state.next_possible_tokens())
             print("Static Board Eval:", state.static_board_evaluation())
         print()
+
 
 if __name__ == "__main__":
     main()
