@@ -54,22 +54,9 @@ class PNTState():
         return token
 
     def get_token(self, token) -> int:
-        if (token in self._taken_tokens or
-            token > self._total_tokens):
-            raise ValueError("Invalid token")
-
-        # First move
-        if self._num_taken_tokens == 0:
-            middle_token = self._total_tokens / 2
-            if token < middle_token and token % 2 == 1:
-                return self._take_token(token)
-            else:
-                raise ValueError("Invalid first token")
-        # Not first move
-        elif is_factor_or_multiple(token, self.last_taken_token):
+        if token in self.next_possible_tokens():
             return self._take_token(token)
-        else:
-            raise ValueError("Invalid token")
+        raise ValueError("Invalid token.")
 
     def next_possible_tokens(self) -> list:
         # First move
