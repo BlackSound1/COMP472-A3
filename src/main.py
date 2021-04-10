@@ -11,6 +11,11 @@ def main():
     # Interactive Testing
     while len(state.next_possible_tokens()) != 0:
         max_turn = [PNTState.taken_tokens]
+
+        best_move = state.alpha_beta_search()
+
+        print("Your best move is: " + str(best_move))
+
         token = input(f"Player {state.next_player}: ")
         try:
             state.get_token(int(token))

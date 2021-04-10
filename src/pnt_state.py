@@ -51,7 +51,7 @@ class PNTState:
 
     @property
     def last_taken_token(self) -> int:
-        return self._taken_tokens[-1]
+        return self._taken_tokens[-1]  # TODO: This causes a "list index out of range" exception. Handle better?
 
     def _take_token(self, token) -> int:
         self._num_taken_tokens += 1
@@ -119,82 +119,84 @@ class PNTState:
         player = self.to_move()
         alpha: float = float('-inf')
         beta: float = float('inf')
-        value, move = self.max_value(alpha, beta)
+        value, move = self.max_value(self, player, alpha, beta)
 
         return move
 
     @staticmethod
-    def max_value(state: PNTState, alpha: float, beta: float) -> tuple:
+    def max_value(state: PNTState, player: int, alpha: float, beta: float) -> list:
         if state.is_terminal():
-            return state.static_board_evaluation(), None
+            return [[state.static_board_evaluation(), player], None]
 
         v = float('-inf')
         move = None
 
         for token in state.next_possible_tokens():
-            state.taken_tokens.append(token)
-            new_state = PNTState(state.total_tokens - 1, state.num_taken_tokens + 1, state.taken_tokens, state.depth)
 
-            v2, a2 = state.min_value(state.result(new_state, token), alpha, beta)
+            v2, a2 = state.min_value(state.result(token), player, alpha, beta)
 
-            if v2 > v:
-                v, move = v2, token
+            if v2[1] > v:
+                v, move = v2[1], token
                 alpha = max(alpha, v)
 
             if v >= beta:
-                return v, move
-        return v, move
+                return [v, move]
+        return [v, move]
 
     @staticmethod
-    def min_value(state, alpha, beta) -> tuple:
+    def min_value(state, player, alpha, beta) -> list:
         if state.is_terminal():
-            return state.static_board_evaluation(), None
+            return [[state.static_board_evaluation(), player], None]
 
         v = float('inf')
         move = None
 
         for token in state.next_possible_tokens():
-            state.taken_tokens.append(token)
-            new_state = PNTState(state.total_tokens - 1, state.num_taken_tokens + 1, state.taken_tokens, state.depth)
 
-            v2, a2 = state.max_value(state.result(new_state, token), alpha, beta)
+            v2, a2 = state.max_value(state.result(token), player, alpha, beta)
 
-            if v2 < v:
-                v, move = v2, token
+            if v2[1] < v:
+                v, move = v2[1], token
                 beta = min(beta, token)
 
             if v <= alpha:
-                return v, move
-        return v, move
+                return [v, move]
+        return [v, move]
 
-    @staticmethod
-    def result(state, action) -> PNTState:
-        """ The transition model which defines the state resulting from taking the given action in the given state
+    def result(self, action: int) -> PNTState:
+        """ The transition model which defines the state resulting from taking the given action in the current state
 
-        :param state: The given PNTState
         :param action: The given action
         :return: A new PNTState resulting from the action
         """
 
-        # TODO: Complete result method
-        pass
+        new_list = self.taken_tokens.copy()
+        new_list.append(action)
+
+        # Create a new PNTState to explore
+        new_state = PNTState(self.total_tokens - 1, self.num_taken_tokens + 1, new_list, self.depth)
+
+        # # Append the token to the new_states taken_tokens instead of this states taken_tokens
+        # new_state.taken_tokens.append(action)
+
+        return new_state
 
     def to_move(self) -> int:
-        """ The player whose turn it is to move in the given state
+        """ The player whose turn it is to move in the current state
 
         :return: The number of the player
         """
         return self.next_player
 
     def actions(self) -> list:
-        """ The set of legal moves in the given state
+        """ The set of legal moves in the current state
 
         :return: The list of possible tokens to take
         """
         return self.next_possible_tokens()
 
     def is_terminal(self) -> bool:
-        """ Returns whether a given State is a terminal state.
+        """ Returns whether the current State is a terminal state.
         i.e Whether there exist any more moves to make from the current state
 
         :return: True or False
