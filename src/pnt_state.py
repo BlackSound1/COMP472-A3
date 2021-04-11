@@ -6,11 +6,13 @@ from utils import *
 class PNTState:
     """Represents a pick numbered-tokens state"""
 
-    def __init__(self, total_tokens: int, num_taken_tokens: int, taken_tokens: list, depth: int):
+    def __init__(self, total_tokens: int, num_taken_tokens: int, taken_tokens: list, max_depth: int):
         self._total_tokens: int = total_tokens
         self._num_taken_tokens: int = num_taken_tokens
         self._taken_tokens: list = taken_tokens
-        self._depth: int = depth
+        # If the given depth is > 0, assign it normally. Otherwise, infinite depth (go all the way to the leaves)
+        self._max_depth: int = max_depth if max_depth > 0 else float('inf')
+        self._current_depth: int = 0
 
     def __str__(self):
         return cleandoc(f"""
@@ -18,8 +20,17 @@ class PNTState:
         Total tokens: {self._total_tokens}
         Num taken token: {self._num_taken_tokens}
         Tokens taken: {self._taken_tokens}
-        Depth: {self._depth}
+        Max Depth: {self._max_depth}
+        Current Depth: {self._current_depth}
         """)
+
+    @property
+    def current_depth(self):
+        return self._current_depth
+
+    @current_depth.setter
+    def current_depth(self, new_depth):
+        self._current_depth = new_depth
 
     @property
     def total_tokens(self):
@@ -34,8 +45,8 @@ class PNTState:
         return self._taken_tokens
 
     @property
-    def depth(self):
-        return self._depth
+    def max_depth(self):
+        return self._max_depth
 
     @property
     def winner(self) -> int:
@@ -116,52 +127,52 @@ class PNTState:
 
         :return: The token to take
         """
-        player = self.to_move()
+        # player = self.to_move()
         alpha: float = float('-inf')
         beta: float = float('inf')
-        value, move = self.max_value(self, player, alpha, beta)
+        value, move = self.max_value(self, alpha, beta)
 
         return move
 
     @staticmethod
-    def max_value(state: PNTState, player: int, alpha: float, beta: float) -> list:
-        if state.is_terminal():
-            return [[state.static_board_evaluation(), player], None]
+    def max_value(state: PNTState, alpha: float, beta: float):
+        if state.is_terminal() or state.current_depth > state.max_depth:
+            return state.utility(), None
 
         v = float('-inf')
         move = None
 
         for token in state.next_possible_tokens():
 
-            v2, a2 = state.min_value(state.result(token), player, alpha, beta)
+            v2, a2 = state.min_value(state.result(token), alpha, beta)
 
-            if v2[1] > v:
-                v, move = v2[1], token
+            if v2 > v:
+                v, move = v2, token
                 alpha = max(alpha, v)
 
             if v >= beta:
-                return [v, move]
-        return [v, move]
+                return v, move
+        return v, move
 
     @staticmethod
-    def min_value(state, player, alpha, beta) -> list:
-        if state.is_terminal():
-            return [[state.static_board_evaluation(), player], None]
+    def min_value(state: PNTState, alpha: float, beta: float):
+        if state.is_terminal() or state.current_depth > state.max_depth:
+            return state.utility(), None
 
         v = float('inf')
         move = None
 
         for token in state.next_possible_tokens():
 
-            v2, a2 = state.max_value(state.result(token), player, alpha, beta)
+            v2, a2 = state.max_value(state.result(token), alpha, beta)
 
-            if v2[1] < v:
-                v, move = v2[1], token
+            if v2 < v:
+                v, move = v2, token
                 beta = min(beta, token)
 
             if v <= alpha:
-                return [v, move]
-        return [v, move]
+                return v, move
+        return v, move
 
     def result(self, action: int) -> PNTState:
         """ The transition model which defines the state resulting from taking the given action in the current state
@@ -170,11 +181,16 @@ class PNTState:
         :return: A new PNTState resulting from the action
         """
 
+        # Makes a copy of the current state's taken_tokens so we can append to it
+        # without appending to both states' taken_tokens
         new_list = self.taken_tokens.copy()
         new_list.append(action)
 
+        new_depth = self.current_depth + 1
+
         # Create a new PNTState to explore
-        new_state = PNTState(self.total_tokens - 1, self.num_taken_tokens + 1, new_list, self.depth)
+        new_state = PNTState(self.total_tokens - 1, self.num_taken_tokens + 1, new_list, self.max_depth)
+        new_state.current_depth = new_depth
 
         # # Append the token to the new_states taken_tokens instead of this states taken_tokens
         # new_state.taken_tokens.append(action)
@@ -202,3 +218,10 @@ class PNTState:
         :return: True or False
         """
         return self.next_possible_tokens() == []
+
+    def utility(self) -> float:
+        """ Defines final numeric value when game ends in terminal state
+
+        :return: The static board evaluation
+        """
+        return self.static_board_evaluation()
