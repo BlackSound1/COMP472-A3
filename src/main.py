@@ -2,7 +2,7 @@ from pnt_state import PNTState
 
 
 def main():
-    state = PNTState(7, 0, [], 4)
+    state = PNTState(10, 3, [4, 2, 6], 4)
 
     print('---Starting the game with---\n')
     print(state)
@@ -19,9 +19,11 @@ def main():
 
         max_turn = [PNTState.taken_tokens]
 
-        best_move = state.alpha_beta_search()
+        val, best_move = state.alpha_beta_search()
 
         print(f"Player {state.next_player}'s best move is: " + str(best_move))
+
+        print(f"Player {state.next_player}'s best move val is: " + str(val))
 
         token = input(f"Player {state.next_player}: ")
         try:

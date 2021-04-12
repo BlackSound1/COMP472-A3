@@ -122,22 +122,26 @@ class PNTState:
 
         return evaluation_value if self.next_player == 1 else -evaluation_value
 
-    def alpha_beta_search(self) -> int:
+    def alpha_beta_search(self):
         """ Performs the Alpha-Beta search algorithm
 
         :return: The token to take
         """
-        # player = self.to_move()
         alpha: float = float('-inf')
         beta: float = float('inf')
-        value, move = self.max_value(self, alpha, beta)
 
-        return move
+        # Depending on the current player, start with their appropriate algorithm
+        if self.next_player == 1:
+            value, move = self.max_value(self, alpha, beta)
+        else:
+            value, move = self.min_value(self, alpha, beta)
+
+        return value, move
 
     @staticmethod
     def max_value(state: PNTState, alpha: float, beta: float):
         if state.is_terminal() or state.current_depth > state.max_depth:
-            return state.utility(), None
+            return state.static_board_evaluation(), None
 
         v = float('-inf')
         move = None
@@ -157,7 +161,7 @@ class PNTState:
     @staticmethod
     def min_value(state: PNTState, alpha: float, beta: float):
         if state.is_terminal() or state.current_depth > state.max_depth:
-            return state.utility(), None
+            return state.static_board_evaluation(), None
 
         v = float('inf')
         move = None
@@ -189,20 +193,10 @@ class PNTState:
         new_depth = self.current_depth + 1
 
         # Create a new PNTState to explore
-        new_state = PNTState(self.total_tokens - 1, self.num_taken_tokens + 1, new_list, self.max_depth)
+        new_state = PNTState(self.total_tokens, self.num_taken_tokens + 1, new_list, self.max_depth)
         new_state.current_depth = new_depth
 
-        # # Append the token to the new_states taken_tokens instead of this states taken_tokens
-        # new_state.taken_tokens.append(action)
-
         return new_state
-
-    def to_move(self) -> int:
-        """ The player whose turn it is to move in the current state
-
-        :return: The number of the player
-        """
-        return self.next_player
 
     def actions(self) -> list:
         """ The set of legal moves in the current state
@@ -218,10 +212,3 @@ class PNTState:
         :return: True or False
         """
         return self.next_possible_tokens() == []
-
-    def utility(self) -> float:
-        """ Defines final numeric value when game ends in terminal state
-
-        :return: The static board evaluation
-        """
-        return self.static_board_evaluation()
