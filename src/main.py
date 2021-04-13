@@ -1,10 +1,41 @@
 from pnt_state import PNTState
-from utils import generate_output, read_input
+from utils import *
+
+
+def read_input():
+    directory = f'../input'
+    states = []
+    try:
+        with open(f'{directory}/testcase.txt', 'r') as file:
+            lines = file.readlines()
+            for line in lines:
+                line = line.lstrip().rstrip('\n')
+                state = to_pnt_state(line)
+                if state:
+                    print(state)
+                    print()
+                    states.append(state)
+    except FileNotFoundError:
+        print('no input file found\n')
+    finally:
+        return states
+
+
+def to_pnt_state(string: str):
+    state = None
+    match = re.search(r'(?:PNT Player|TakeTokens) (\d+) (\d+)( \d(?: \d)*)? (\d+)',
+                      string)
+    if match:
+        taken_tokens = []
+        if match.group(3) is not None:
+            taken_tokens = to_int_list(match.group(3))
+        state = PNTState(int(match.group(1)), int(match.group(2)), taken_tokens, int(match.group(4)))
+    return state
 
 
 def main():
-    states = [PNTState(3, 0, [], 0), PNTState(7, 1, [1], 2), PNTState(10, 3, [4, 2, 6], 4), PNTState(7, 3, [1, 4, 2], 3)]
-
+    # states = [PNTState(3, 0, [], 0), PNTState(7, 1, [1], 2), PNTState(10, 3, [4, 2, 6], 4), PNTState(7, 3, [1, 4, 2], 3)]
+    states = read_input()
     for state in states:
         move, value, states_visited, states_evaluated, depth_reached = state.alpha_beta_search()
         generate_output(move, value, states_visited, states_evaluated, depth_reached)

@@ -1,4 +1,5 @@
 import os
+import re
 
 
 output_counter = 1
@@ -21,8 +22,9 @@ def is_prime(value) -> bool:
     return False
 
 
-def read_input():
-    pass
+def to_int_list(string: str):
+    str_list = string.split()
+    return list(map(int, str_list))
 
 
 def generate_output(move: int, value: float, states_visited: [], states_evaluated: [], depth_reached: int):
