@@ -40,6 +40,14 @@ def main():
         move, value, states_visited, states_evaluated, depth_reached = state.alpha_beta_search()
         generate_output(move, value, states_visited, states_evaluated, depth_reached)
 
+    while True:
+        string = input('Enter a command input or q to quit: ')
+        if string == 'q':
+            break
+        state = to_pnt_state(string)
+        move, value, states_visited, states_evaluated, depth_reached = state.alpha_beta_search()
+        generate_output(move, value, states_visited, states_evaluated, depth_reached)
+
     # print('---Starting the game with---\n')
     # print(state)
     # print("Static Board Eval:", state.static_board_evaluation())
