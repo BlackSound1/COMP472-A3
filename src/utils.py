@@ -14,3 +14,7 @@ def is_prime(value) -> bool:
         else:
             return True
     return False
+
+
+def create_10_random_test_cases():
+    pass
