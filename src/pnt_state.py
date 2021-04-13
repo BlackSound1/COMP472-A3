@@ -3,11 +3,6 @@ from inspect import cleandoc
 from utils import *
 
 
-
-
-#Max =1 
-#Min =2
-
 class PNTState:
     """Represents a pick numbered-tokens state"""
 
@@ -18,7 +13,7 @@ class PNTState:
         # If the given depth is > 0, assign it normally. Otherwise, infinite depth (go all the way to the leaves)
         self._max_depth: int = max_depth if max_depth > 0 else float('inf')
         self._current_depth: int = 0
-        
+
     def __str__(self):
         return cleandoc(f"""
         PNT State
@@ -62,7 +57,9 @@ class PNTState:
     @property
     def next_player(self) -> int:
         if self._num_taken_tokens % 2 == 0:
+            # Max
             return 1
+        # Min
         return 2
 
     @property
@@ -127,31 +124,18 @@ class PNTState:
 
         return evaluation_value if self.next_player == 1 else -evaluation_value
 
-
-
-
-#################  ALPHA BETA START#################################
-
-
-
-
     def alpha_beta_search(self):
         """ Performs the Alpha-Beta search algorithm
 
-        :return: The token to take
+        :return: The value of the move and the token to take
         """
         alpha: float = float('-inf')
         beta: float = float('inf')
-        
-        
-        
-        global states_visited, states_evaluated, depth_reached, number_parents
+
+        global states_visited, states_evaluated, depth_reached
         states_visited = []
         states_evaluated = []
         depth_reached = 0
-        number_parents =0
-        
-
 
         # Depending on the current player, start with their appropriate algorithm
         if self.next_player == 1:
@@ -159,59 +143,44 @@ class PNTState:
         else:
             value, move = self.min_value(self, alpha, beta)
 
-
+        # Output
         print("Move:", move)
-        print("value:", value)
-        print("Number of nodes Visited:", len(states_visited))
-        print("Number of nodes Evaluated:", len(states_evaluated))
-        print("Max depth reached:", depth_reached)
-        print("Average branching factor:",  (  (len(states_visited)-1) / (number_parents) ) )
-        
-        print('\n\n')
-        
-        
+        print("Value:", value)
+        print("Number of Nodes Visited:", len(states_visited))
+        print("Number of Nodes Evaluated:", len(states_evaluated))
+        print("Max Depth Reached:", depth_reached)
+        # Nb of children nodes visited / Nb of parent nodes
+        # Nb of nodes visited excluding root / Nb of nodes visited - Nb of leaf nodes
+        print("Avg Effective Branching Factor:",
+              ((len(states_visited) - 1) / (len(states_visited) - len(states_evaluated))))
+        print('')
 
         return value, move
 
-
     @staticmethod
     def max_value(state: PNTState, alpha: float, beta: float):
-        
-        global states_visited, states_evaluated, depth_reached, number_parents
-    
 
-        if state.current_depth > depth_reached and state.current_depth <= state.max_depth:
+        global states_visited, states_evaluated, depth_reached
+
+        if depth_reached < state.current_depth <= state.max_depth:
             depth_reached = state.current_depth
-        
-        if state.current_depth <= state.max_depth:
 
+        if state.current_depth <= state.max_depth:
             print("#### MAX VALUE ####")
-            #print(state)
             print('successors:', state.next_possible_tokens())
-            temp = [i for i in range(1, state.total_tokens +1)]
+            temp = [i for i in range(1, state.total_tokens + 1)]
             for i in state.taken_tokens:
                 temp.remove(i)
-            print('tokens left:', " ".join(str(x)  for x in temp  ))
+            print('tokens left:', " ".join(str(x) for x in temp))
             states_visited.append(temp)
+            print()
 
-            
-            print('\n\n')
-
-        
-        if not state.is_terminal() and state.current_depth < state.max_depth:
-            number_parents +=1
-            
-        
-        if ((state.is_terminal() and state.current_depth <=state.max_depth) or state.current_depth == state.max_depth):
+        if (state.is_terminal() and state.current_depth <= state.max_depth) or state.current_depth == state.max_depth:
             states_evaluated.append(state)
-        
-        
+
         if state.is_terminal() or state.current_depth > state.max_depth:
             return state.static_board_evaluation(), None
 
-
-
-       
         v = float('-inf')
         move = None
 
@@ -227,49 +196,29 @@ class PNTState:
                 return v, move
         return v, move
 
-
     @staticmethod
     def min_value(state: PNTState, alpha: float, beta: float):
-        
-        global states_visited, states_evaluated, depth_reached, number_parents
-        
-        
-        if state.current_depth > depth_reached and state.current_depth <= state.max_depth:
+        global states_visited, states_evaluated, depth_reached
+
+        if depth_reached < state.current_depth <= state.max_depth:
             depth_reached = state.current_depth
 
-        
-        
         if state.current_depth <= state.max_depth:
-
             print("#### MIN VALUE ####")
-           # print(state)
             print('successors:', state.next_possible_tokens())
-            temp = [i for i in range(1, state.total_tokens +1)]
+            temp = [i for i in range(1, state.total_tokens + 1)]
             for i in state.taken_tokens:
                 temp.remove(i)
-            print('tokens left:', " ".join(str(x)  for x in temp  ))
+            print('tokens left:', " ".join(str(x) for x in temp))
             states_visited.append(temp)
+            print()
 
-            print('\n\n')
-            
-        
-        if not state.is_terminal() and state.current_depth < state.max_depth:
-            number_parents +=1
-        
-        if ((state.is_terminal() and state.current_depth <=state.max_depth) or state.current_depth == state.max_depth):
+        if (state.is_terminal() and state.current_depth <= state.max_depth) or state.current_depth == state.max_depth:
             states_evaluated.append(state)
-            
-        
+
         if state.is_terminal() or state.current_depth > state.max_depth:
             return state.static_board_evaluation(), None
-        
 
-
-
-       
-        
-        
-        
         v = float('inf')
         move = None
 
@@ -284,9 +233,6 @@ class PNTState:
             if v <= alpha:
                 return v, move
         return v, move
-
-
-
 
     def result(self, action: int) -> PNTState:
         """ The transition model which defines the state resulting from taking the given action in the current state
