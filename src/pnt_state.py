@@ -127,7 +127,8 @@ class PNTState:
     def alpha_beta_search(self):
         """ Performs the Alpha-Beta search algorithm
 
-        :return: The value of the move and the token to take
+        :return: The token to take, the value of the move, the list of visited and evaluated states,
+        and the max depth reached.
         """
         alpha: float = float('-inf')
         beta: float = float('inf')
@@ -143,19 +144,7 @@ class PNTState:
         else:
             value, move = self.min_value(self, alpha, beta)
 
-        # Output
-        print("Move:", move)
-        print("Value:", value)
-        print("Number of Nodes Visited:", len(states_visited))
-        print("Number of Nodes Evaluated:", len(states_evaluated))
-        print("Max Depth Reached:", depth_reached)
-        # Nb of children nodes visited / Nb of parent nodes
-        # Nb of nodes visited excluding root / Nb of nodes visited - Nb of leaf nodes
-        print("Avg Effective Branching Factor:",
-              ((len(states_visited) - 1) / (len(states_visited) - len(states_evaluated))))
-        print('')
-
-        return value, move
+        return move, value, states_visited, states_evaluated, depth_reached
 
     @staticmethod
     def max_value(state: PNTState, alpha: float, beta: float):

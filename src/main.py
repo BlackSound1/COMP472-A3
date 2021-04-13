@@ -1,21 +1,14 @@
 from pnt_state import PNTState
+from utils import generate_output, read_input
 
 
 def main():
-    state = PNTState(7, 3, [1, 4, 2], 3)
-    state.alpha_beta_search()
+    states = [PNTState(3, 0, [], 0), PNTState(7, 1, [1], 2), PNTState(10, 3, [4, 2, 6], 4), PNTState(7, 3, [1, 4, 2], 3)]
 
-    # state = PNTState(3, 0, [], 0)
-    # state.alpha_beta_search()
-    #
-    # state = PNTState(7, 1, [1], 2)
-    # state.alpha_beta_search()
-    #
-    # state = PNTState(10, 3, [4, 2, 6], 4)
-    # state.alpha_beta_search()
+    for state in states:
+        move, value, states_visited, states_evaluated, depth_reached = state.alpha_beta_search()
+        generate_output(move, value, states_visited, states_evaluated, depth_reached)
 
-    # state = PNTState(10, 3, [4, 2, 6], 4)
-    #
     # print('---Starting the game with---\n')
     # print(state)
     # print("Static Board Eval:", state.static_board_evaluation())
