@@ -6,6 +6,12 @@ output_counter = 1
 
 
 def is_factor_or_multiple(value, compared_value) -> bool:
+    """ Checks if one given value is a factor or multiple of another given value
+
+    :param value: One of the values to check
+    :param compared_value: The other value
+    :return: True or False
+    """
     if value <= compared_value:
         return not bool(compared_value % value)
     else:
@@ -13,6 +19,11 @@ def is_factor_or_multiple(value, compared_value) -> bool:
 
 
 def is_prime(value) -> bool:
+    """ Checks if a given value is prime
+
+    :param value: The value to check
+    :return: True or False
+    """
     if value > 1:
         for i in range(2, value):
             if value % i == 0:
