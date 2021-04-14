@@ -172,7 +172,7 @@ class PNTState:
 
             if v2 < v:
                 v, move = v2, token
-                beta = min(beta, token)
+                beta = min(beta, v)
 
             if v <= alpha:
                 return v, move
