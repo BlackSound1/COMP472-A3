@@ -13,7 +13,6 @@ class PNTState:
         # If the given depth is > 0, assign it normally. Otherwise, infinite depth (go all the way to the leaves)
         self._max_depth: int = max_depth if max_depth > 0 else float('inf')
         self._current_depth: int = 0
-        print('constructor:', total_tokens, num_taken_tokens, taken_tokens, max_depth)
 
     def __str__(self):
         return cleandoc(f"""
