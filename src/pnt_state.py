@@ -50,12 +50,20 @@ class PNTState:
 
     @property
     def winner(self) -> int:
+        """ Determines if there is a winner and who it is
+
+        :return: The winner
+        """
         if len(self.next_possible_tokens()) == 0 and self._num_taken_tokens > 0:
             return 2 - self._num_taken_tokens % 2
         return 0
 
     @property
     def next_player(self) -> int:
+        """ Determines who the next player is based on how many tokens are taken so far
+
+        :return: The next player
+        """
         if self._num_taken_tokens % 2 == 0:
             # Max
             return 1
@@ -64,19 +72,38 @@ class PNTState:
 
     @property
     def last_taken_token(self) -> int:
+        """ Determines the token that was taken last
+
+        :return: The last-taken token
+        """
         return self._taken_tokens[-1]  # TODO: This causes a "list index out of range" exception. Handle better?
 
     def _take_token(self, token) -> int:
+        """ Takes a given token from those that are possible to take
+
+        :param token: The token to take
+        :return: The token
+        """
         self._num_taken_tokens += 1
         self._taken_tokens.append(token)
         return token
 
     def get_token(self, token) -> int:
+        """ Tries to take the given token from those that are possible to take
+
+        :param token: The token to take
+        :return: The taken token
+        """
         if token in self.next_possible_tokens():
             return self._take_token(token)
         raise ValueError("Invalid token.")
 
     def next_possible_tokens(self) -> list:
+        """ Creates a list of all the possible tokens the given player is able to take
+        based on the rules of the game
+
+        :return: A list of all possible tokens a player can take
+        """
         # First move
         if self._num_taken_tokens == 0:
             return [token for token in range(1, (self._total_tokens + 1) // 2)
@@ -89,6 +116,10 @@ class PNTState:
                     is_factor_or_multiple(token, self.last_taken_token)]
 
     def static_board_evaluation(self) -> float:
+        """ Performs the static board evaluation heuristic as defined in the assignment
+
+        :return: The e value for the leaf node
+        """
         if self.winner == 1:
             return 1.0
         elif self.winner == 2:
@@ -125,7 +156,7 @@ class PNTState:
         return evaluation_value if self.next_player == 1 else -evaluation_value
 
     def alpha_beta_search(self):
-        """ Performs the Alpha-Beta search algorithm
+        """ Performs the Alpha-Beta search algorithm as defined in the book (4th edition, fig. 5.7)
 
         :return: The token to take, the value of the move, the list of visited and evaluated states,
         and the max depth reached.
@@ -148,6 +179,13 @@ class PNTState:
 
     @staticmethod
     def max_value(state: PNTState, alpha: float, beta: float):
+        """ Performs the max_value algorithm as defined in the book
+
+        :param state: The PNTState to find the max value for
+        :param alpha: The current value of alpha
+        :param beta: The current value of beta
+        :return: The best move a given player can make, along with its heuristic value
+        """
 
         global states_visited, states_evaluated, depth_reached
 
@@ -187,6 +225,13 @@ class PNTState:
 
     @staticmethod
     def min_value(state: PNTState, alpha: float, beta: float):
+        """ Performs the min_value algorithm as defined in the book
+
+        :param state: The PNTState to find the min value for
+        :param alpha: The current value of alpha
+        :param beta: The current value of beta
+        :return: The best move a given player can make, along with its heuristic value
+        """
         global states_visited, states_evaluated, depth_reached
 
         if depth_reached < state.current_depth <= state.max_depth:
