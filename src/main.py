@@ -23,7 +23,7 @@ def read_input():
 
 def to_pnt_state(string: str):
     state = None
-    match = re.search(r'(?:PNT Player|TakeTokens) (\d+) (\d+)( \d(?: \d)*)? (\d+)',
+    match = re.search(r'(?:PNT Player|TakeTokens) (\d+) (\d+)( \d+(?: \d+)*)? (\d+)',
                       string)
     if match:
         taken_tokens = []
