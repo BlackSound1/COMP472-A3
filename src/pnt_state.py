@@ -1,6 +1,6 @@
 from __future__ import annotations
 from inspect import cleandoc
-from utils import *
+from utils import is_factor_or_multiple, is_prime
 
 
 class PNTState:
@@ -57,7 +57,9 @@ class PNTState:
     @property
     def next_player(self) -> int:
         if self._num_taken_tokens % 2 == 0:
+            # Max
             return 1
+        # Min
         return 2
 
     @property
@@ -125,10 +127,16 @@ class PNTState:
     def alpha_beta_search(self):
         """ Performs the Alpha-Beta search algorithm
 
-        :return: The token to take
+        :return: The token to take, the value of the move, the list of visited and evaluated states,
+        and the max depth reached.
         """
         alpha: float = float('-inf')
         beta: float = float('inf')
+
+        global states_visited, states_evaluated, depth_reached
+        states_visited = []
+        states_evaluated = []
+        depth_reached = 0
 
         # Depending on the current player, start with their appropriate algorithm
         if self.next_player == 1:
@@ -136,10 +144,29 @@ class PNTState:
         else:
             value, move = self.min_value(self, alpha, beta)
 
-        return value, move
+        return move, value, states_visited, states_evaluated, depth_reached
 
     @staticmethod
     def max_value(state: PNTState, alpha: float, beta: float):
+
+        global states_visited, states_evaluated, depth_reached
+
+        if depth_reached < state.current_depth <= state.max_depth:
+            depth_reached = state.current_depth
+
+        if state.current_depth <= state.max_depth:
+            print("#### MAX VALUE ####")
+            print('successors:', state.next_possible_tokens())
+            temp = [i for i in range(1, state.total_tokens + 1)]
+            for i in state.taken_tokens:
+                temp.remove(i)
+            print('tokens left:', " ".join(str(x) for x in temp))
+            states_visited.append(temp)
+            print()
+
+        if (state.is_terminal() and state.current_depth <= state.max_depth) or state.current_depth == state.max_depth:
+            states_evaluated.append(state)
+
         if state.is_terminal() or state.current_depth > state.max_depth:
             return state.static_board_evaluation(), None
 
@@ -160,6 +187,24 @@ class PNTState:
 
     @staticmethod
     def min_value(state: PNTState, alpha: float, beta: float):
+        global states_visited, states_evaluated, depth_reached
+
+        if depth_reached < state.current_depth <= state.max_depth:
+            depth_reached = state.current_depth
+
+        if state.current_depth <= state.max_depth:
+            print("#### MIN VALUE ####")
+            print('successors:', state.next_possible_tokens())
+            temp = [i for i in range(1, state.total_tokens + 1)]
+            for i in state.taken_tokens:
+                temp.remove(i)
+            print('tokens left:', " ".join(str(x) for x in temp))
+            states_visited.append(temp)
+            print()
+
+        if (state.is_terminal() and state.current_depth <= state.max_depth) or state.current_depth == state.max_depth:
+            states_evaluated.append(state)
+
         if state.is_terminal() or state.current_depth > state.max_depth:
             return state.static_board_evaluation(), None
 
