@@ -1,6 +1,6 @@
 from __future__ import annotations
 from inspect import cleandoc
-from utils import is_factor_or_multiple, is_prime
+from utils import *
 
 
 class PNTState:
