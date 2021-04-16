@@ -2,7 +2,11 @@ from pnt_state import PNTState
 from utils import *
 
 
-def read_input():
+def read_input() -> list:
+    """ Reads the given test cases in the input directory
+
+    :return: The PNTStates
+    """
     directory = f'../input'
     states = []
     try:
@@ -21,7 +25,12 @@ def read_input():
         return states
 
 
-def to_pnt_state(string: str):
+def to_pnt_state(string: str) -> PNTState:
+    """ Converts a given string into a PNTState
+
+    :param string: The string to convert
+    :return: The PNTState
+    """
     state = None
     match = re.search(r'(?:PNT Player|TakeTokens) (\d+) (\d+)( \d+(?: \d+)*)? (\d+)',
                       string)
