@@ -5,6 +5,14 @@ from pnt_state import PNTState
 from typing import List
 
 
+def main():
+    run_given_test_cases()
+
+    # run_random_test_cases()
+
+    # play_the_game_with_a_test_state()
+
+
 def run_algorithm_on_10_random_test_cases(states: List[PNTState]) -> None:
     """ Runs the alpha-beta algorithm on all 10 random test cases. Prints relevant data.
 
@@ -105,57 +113,73 @@ def to_pnt_state(string: str) -> PNTState:
     return state
 
 
-def main():
-    run_random_test_cases()
+def run_given_test_cases() -> None:
+    """ Runs the test cases that were given in the assignment, or any test cases present in the input directory
 
-    # # states = [PNTState(3, 0, [], 0), PNTState(7, 1, [1], 2), PNTState(10, 3, [4, 2, 6], 4), PNTState(7, 3, [1, 4, 2], 3)]
-    # states = read_input()
-    # for state in states:
-    #     move, value, states_visited, states_evaluated, depth_reached = state.alpha_beta_search()
-    #     generate_output(move, value, states_visited, states_evaluated, depth_reached)
-    #
-    # while True:
-    #     string = input('Enter a command input or q to quit: ')
-    #     if string == 'q':
-    #         break
-    #     state = to_pnt_state(string)
-    #     if state is not None:
-    #         move, value, states_visited, states_evaluated, depth_reached = state.alpha_beta_search()
-    #         generate_output(move, value, states_visited, states_evaluated, depth_reached)
+    :return: None
+    """
+    states = read_input()
 
-    # print('---Starting the game with---\n')
-    # print(state)
-    # print("Static Board Eval:", state.static_board_evaluation())
-    # print("Possible token(s):", state.next_possible_tokens())
-    # print()
-    #
-    # # Interactive Testing
-    # while len(state.next_possible_tokens()) != 0:
-    #     print(f'---Player {state.next_player}\'s turn---\n')
-    #     print("Taken:", state.taken_tokens)
-    #     print("Possible token(s):", state.next_possible_tokens())
-    #     print("Static Board Eval:", state.static_board_evaluation())
-    #
-    #     max_turn = [PNTState.taken_tokens]
-    #
-    #     val, best_move = state.alpha_beta_search()
-    #
-    #     print(f"Player {state.next_player}'s best move is: " + str(best_move))
-    #
-    #     print(f"Player {state.next_player}'s best move val is: " + str(val))
-    #
-    #     token = input(f"Player {state.next_player}: ")
-    #     try:
-    #         state.get_token(int(token))
-    #     except Exception as err:
-    #         print(err)
-    #
-    #     if state.winner:
-    #         print(f"Player {state.winner} wins")
-    #     else:
-    #         print("Taken:", state.taken_tokens)
-    #         print("Possible token(s):", state.next_possible_tokens())
-    #         print("Static Board Eval:", state.static_board_evaluation(), '\n')
+    for state in states:
+        move, value, states_visited, states_evaluated, depth_reached = state.alpha_beta_search()
+
+        generate_output(move, value, states_visited, states_evaluated, depth_reached)
+
+    while True:
+        string = input('Enter a command input or q to quit: ')
+
+        if string == 'q':
+            break
+
+        state = to_pnt_state(string)
+
+        if state is not None:
+            move, value, states_visited, states_evaluated, depth_reached = state.alpha_beta_search()
+
+            generate_output(move, value, states_visited, states_evaluated, depth_reached)
+
+
+def play_the_game_with_a_test_state() -> None:
+    """ Actually plays the PNT game with an initial state (7 total tokens, none taken, maximum depth)
+
+    :return: None
+    """
+    state = PNTState(7, 0, [], 0)
+
+    print('---Starting the game with---\n')
+    print(state)
+    print("Static Board Eval:", state.static_board_evaluation())
+    print("Possible token(s):", state.next_possible_tokens())
+    print()
+
+    # Interactive Testing
+    while len(state.next_possible_tokens()) != 0:
+        print(f'---Player {state.next_player}\'s turn---\n')
+        print("Taken:", state.taken_tokens)
+        print("Possible token(s):", state.next_possible_tokens())
+        print("Static Board Eval:", state.static_board_evaluation())
+
+        max_turn = [PNTState.taken_tokens]
+
+        best_move, val, _, _, _ = state.alpha_beta_search()
+
+        print(f"Player {state.next_player}'s best move is: " + str(best_move))
+
+        print(f"Player {state.next_player}'s best move val is: " + str(val))
+
+        token = input(f"Player {state.next_player}: ")
+
+        try:
+            state.get_token(int(token))
+        except Exception as err:
+            print(err)
+
+        if state.winner:
+            print(f"Player {state.winner} wins")
+        else:
+            print("Taken:", state.taken_tokens)
+            print("Possible token(s):", state.next_possible_tokens())
+            print("Static Board Eval:", state.static_board_evaluation(), '\n')
 
 
 def run_random_test_cases() -> None:
