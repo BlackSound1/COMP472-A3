@@ -1,6 +1,6 @@
-Move: 1
+Move: 5
 Value: -1.0
-Number of Nodes Visited: 4
-Number of Nodes Evaluated: 2
-Max Depth Reached: 2
-Avg Effective Branching Factor: 1.5
+Number of Nodes Visited: 17
+Number of Nodes Evaluated: 6
+Max Depth Reached: 5
+Avg Effective Branching Factor: 1.4545454545454546

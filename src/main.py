@@ -6,9 +6,9 @@ from typing import List
 
 
 def main():
-    run_given_test_cases()
+    # run_given_test_cases()
 
-    # run_random_test_cases()
+    run_random_test_cases()
 
     # play_the_game_with_a_test_state()
 
@@ -23,6 +23,7 @@ def run_algorithm_on_10_random_test_cases(states: List[PNTState]) -> None:
         print(f"--- Test Case {i + 1} ---\n")
 
         move, value, states_visited, states_evaluated, depth_reached = state.alpha_beta_search()
+        generate_output(move, value, states_visited, states_evaluated, depth_reached)
 
         print(f"Move: {move}\nValue: {value}\nStates visited: {states_visited}\nDepth Reached: {depth_reached}\n"
               f"States Evaluated:\n")
