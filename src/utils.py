@@ -43,7 +43,7 @@ def generate_output(move: int, value: float, states_visited: [], states_evaluate
     # Nb of children nodes visited / Nb of parent nodes
     # Nb of nodes visited excluding root / Nb of nodes visited - Nb of leaf nodes
     if len(states_visited) == len(states_evaluated):
-        branching_factor = 0
+        branching_factor = len(states_visited) - 1
     else:
         branching_factor = (len(states_visited) - 1) / (len(states_visited) - len(states_evaluated))
 

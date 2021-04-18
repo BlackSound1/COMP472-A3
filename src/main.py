@@ -48,7 +48,7 @@ def create_random_test_cases() -> list:
     test_cases = []
 
     for i in range(10):
-        n = random.randint(3, 10)  # Decide between 3 and 10 tokens
+        n = random.randint(7, 10)  # Decide between 7 and 10 tokens
 
         state = PNTState(n, 0, [], 0)
 
