@@ -1,6 +1,4 @@
 import os
-import re
-
 
 output_counter = 1
 
@@ -49,7 +47,3 @@ def generate_output(move: int, value: float, states_visited: [], states_evaluate
         file.write(output_string)
         file.close()
     output_counter += 1
-
-
-def create_10_random_test_cases():
-    pass
