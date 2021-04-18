@@ -1,7 +1,6 @@
 import os
 
 output_counter = 1
-counter = 1
 
 
 def is_factor_or_multiple(value, compared_value) -> bool:
