@@ -108,20 +108,20 @@ def to_pnt_state(string: str) -> PNTState:
 def main():
     run_random_test_cases()
 
-    # states = [PNTState(3, 0, [], 0), PNTState(7, 1, [1], 2), PNTState(10, 3, [4, 2, 6], 4), PNTState(7, 3, [1, 4, 2], 3)]
-    states = read_input()
-    for state in states:
-        move, value, states_visited, states_evaluated, depth_reached = state.alpha_beta_search()
-        generate_output(move, value, states_visited, states_evaluated, depth_reached)
-
-    while True:
-        string = input('Enter a command input or q to quit: ')
-        if string == 'q':
-            break
-        state = to_pnt_state(string)
-        if state is not None:
-            move, value, states_visited, states_evaluated, depth_reached = state.alpha_beta_search()
-            generate_output(move, value, states_visited, states_evaluated, depth_reached)
+    # # states = [PNTState(3, 0, [], 0), PNTState(7, 1, [1], 2), PNTState(10, 3, [4, 2, 6], 4), PNTState(7, 3, [1, 4, 2], 3)]
+    # states = read_input()
+    # for state in states:
+    #     move, value, states_visited, states_evaluated, depth_reached = state.alpha_beta_search()
+    #     generate_output(move, value, states_visited, states_evaluated, depth_reached)
+    #
+    # while True:
+    #     string = input('Enter a command input or q to quit: ')
+    #     if string == 'q':
+    #         break
+    #     state = to_pnt_state(string)
+    #     if state is not None:
+    #         move, value, states_visited, states_evaluated, depth_reached = state.alpha_beta_search()
+    #         generate_output(move, value, states_visited, states_evaluated, depth_reached)
 
     # print('---Starting the game with---\n')
     # print(state)
@@ -158,7 +158,11 @@ def main():
     #         print("Static Board Eval:", state.static_board_evaluation(), '\n')
 
 
-def run_random_test_cases():
+def run_random_test_cases() -> None:
+    """ Runs all 10 random test cases
+
+    :return: None
+    """
     print("--- CREATING RANDOM TEST CASES ---\n")
     states = None
     while states is None:
