@@ -147,8 +147,6 @@ def play_the_game_with_a_test_state() -> None:
         print("Possible token(s):", state.next_possible_tokens())
         print("Static Board Eval:", state.static_board_evaluation())
 
-        max_turn = [PNTState.taken_tokens]
-
         best_move, val, _, _, _, _ = state.alpha_beta_search()
 
         print(f"Player {state.next_player}'s best move is: " + str(best_move))
