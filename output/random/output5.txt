@@ -1,6 +1,25 @@
-Move: 5
-Value: -1.0
-Number of Nodes Visited: 50
-Number of Nodes Evaluated: 17
-Max Depth Reached: 7
-Avg Effective Branching Factor: 1.4848484848484849
+PNT State
+Total tokens: 6
+Num taken token: 3
+Tokens taken: [1, 2, 4]
+Max Depth: inf
+Current Depth: 3
+
+Move: None
+Value: 1.0
+Number of Nodes Visited: 1
+Number of Nodes Evaluated: 1
+Max Depth Reached: 3
+Avg Effective Branching Factor: 0
+Prune Count: 0
+
+--- Evaluated Nodes ---
+
+PNT State
+Total tokens: 6
+Num taken token: 3
+Tokens taken: [1, 2, 4]
+Max Depth: inf
+Current Depth: 3
+1.0
+

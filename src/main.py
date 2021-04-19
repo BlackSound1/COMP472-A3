@@ -21,15 +21,7 @@ def run_algorithm_on_10_random_test_cases(states: List[PNTState]) -> None:
     """
     for i, state in enumerate(states):
         print(f"--- Test Case {i + 1} ---\n")
-
-        move, value, states_visited, states_evaluated, depth_reached = state.alpha_beta_search()
-
-        generate_output(move, value, states_visited, states_evaluated, depth_reached, True)
-
-        print(f"Move: {move}\nValue: {value}\nStates visited: {states_visited}\nDepth Reached: {depth_reached}\n"
-              f"States Evaluated:\n")
-        for s in states_evaluated:
-            print(str(s) + "\n")
+        generate_output(state, *state.alpha_beta_search(), True)
 
 
 def create_random_test_cases() -> list:
@@ -89,8 +81,6 @@ def read_input() -> list:
                 line = line.lstrip().rstrip('\n')
                 state = to_pnt_state(line)
                 if state:
-                    print(state)
-                    print()
                     states.append(state)
     except FileNotFoundError:
         print('no input file found\n')
@@ -123,9 +113,7 @@ def run_given_test_cases() -> None:
     states = read_input()
 
     for state in states:
-        move, value, states_visited, states_evaluated, depth_reached = state.alpha_beta_search()
-
-        generate_output(move, value, states_visited, states_evaluated, depth_reached, False)
+        generate_output(state, *state.alpha_beta_search(), False)
 
     while True:
         string = input('Enter a command input or q to quit: ')
@@ -136,9 +124,7 @@ def run_given_test_cases() -> None:
         state = to_pnt_state(string)
 
         if state is not None:
-            move, value, states_visited, states_evaluated, depth_reached = state.alpha_beta_search()
-
-            generate_output(move, value, states_visited, states_evaluated, depth_reached, False)
+            generate_output(state, *state.alpha_beta_search(), False)
 
 
 def play_the_game_with_a_test_state() -> None:
@@ -161,9 +147,7 @@ def play_the_game_with_a_test_state() -> None:
         print("Possible token(s):", state.next_possible_tokens())
         print("Static Board Eval:", state.static_board_evaluation())
 
-        max_turn = [PNTState.taken_tokens]
-
-        best_move, val, _, _, _ = state.alpha_beta_search()
+        best_move, val, _, _, _, _ = state.alpha_beta_search()
 
         print(f"Player {state.next_player}'s best move is: " + str(best_move))
 
