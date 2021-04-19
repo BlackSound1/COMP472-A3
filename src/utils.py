@@ -36,12 +36,17 @@ def to_int_list(string: str):
     return list(map(int, str_list))
 
 
-def generate_output(move: int, value: float, states_visited: [], states_evaluated: [], depth_reached: int):
+def generate_output(move: int, value: float, states_visited: [], states_evaluated: [],
+                    depth_reached: int, random: bool):
     global output_counter
 
     # Nb of children nodes visited / Nb of parent nodes
     # Nb of nodes visited excluding root / Nb of nodes visited - Nb of leaf nodes
-    branching_factor = (len(states_visited) - 1) / (len(states_visited) - len(states_evaluated))
+    if len(states_visited) == len(states_evaluated):
+        branching_factor = len(states_visited) - 1
+    else:
+        branching_factor = (len(states_visited) - 1) / (len(states_visited) - len(states_evaluated))
+
     output_string = f'Move: {move}\n' \
                     f'Value: {value}\n' \
                     f'Number of Nodes Visited: {len(states_visited)}\n' \
@@ -50,7 +55,11 @@ def generate_output(move: int, value: float, states_visited: [], states_evaluate
                     f'Avg Effective Branching Factor: {branching_factor}\n'
     print(output_string)
 
-    directory = f'../output'
+    if random:
+        directory = f'../output/random'
+    else:
+        directory = f'../output'
+
     if not os.path.isdir(directory):
         os.makedirs(directory)
 
