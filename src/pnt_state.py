@@ -12,7 +12,7 @@ class PNTState:
         self._taken_tokens: list = taken_tokens
         # If the given depth is > 0, assign it normally. Otherwise, infinite depth (go all the way to the leaves)
         self._max_depth: int = max_depth if max_depth > 0 else float('inf')
-        self._current_depth: int = 0
+        self._current_depth: int = taken_tokens
 
     def __str__(self):
         return cleandoc(f"""
