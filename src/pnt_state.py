@@ -76,7 +76,7 @@ class PNTState:
 
         :return: The last-taken token
         """
-        return self._taken_tokens[-1]  # TODO: This causes a "list index out of range" exception. Handle better?
+        return self._taken_tokens[-1] if len(self._taken_tokens) else None
 
     def _take_token(self, token) -> int:
         """ Takes a given token from those that are possible to take
@@ -164,10 +164,11 @@ class PNTState:
         alpha: float = float('-inf')
         beta: float = float('inf')
 
-        global states_visited, states_evaluated, depth_reached
+        global states_visited, states_evaluated, depth_reached, prune_count
         states_visited = []
         states_evaluated = []
         depth_reached = 0
+        prune_count = 0
 
         # Depending on the current player, start with their appropriate algorithm
         if self.next_player == 1:
@@ -175,7 +176,7 @@ class PNTState:
         else:
             value, move = self.min_value(self, alpha, beta)
 
-        return move, value, states_visited, states_evaluated, depth_reached
+        return move, value, states_visited, states_evaluated, depth_reached, prune_count
 
     @staticmethod
     def max_value(state: PNTState, alpha: float, beta: float):
@@ -187,20 +188,20 @@ class PNTState:
         :return: The best move a given player can make, along with its heuristic value
         """
 
-        global states_visited, states_evaluated, depth_reached
+        global states_visited, states_evaluated, depth_reached, prune_count
 
         if depth_reached < state.current_depth <= state.max_depth:
             depth_reached = state.current_depth
 
         if state.current_depth <= state.max_depth:
-            print("#### MAX VALUE ####")
-            print('successors:', state.next_possible_tokens())
+            # print("#### MAX VALUE ####")
+            # print('successors:', state.next_possible_tokens())
             temp = [i for i in range(1, state.total_tokens + 1)]
             for i in state.taken_tokens:
                 temp.remove(i)
-            print('tokens left:', " ".join(str(x) for x in temp))
+            # print('tokens left:', " ".join(str(x) for x in temp))
             states_visited.append(temp)
-            print()
+            # print()
 
         if (state.is_terminal() and state.current_depth <= state.max_depth) or state.current_depth == state.max_depth:
             states_evaluated.append(state)
@@ -211,7 +212,7 @@ class PNTState:
         v = float('-inf')
         move = None
 
-        for token in state.next_possible_tokens():
+        for i, token in enumerate(state.next_possible_tokens(), start=1):
 
             v2, a2 = state.min_value(state.result(token), alpha, beta)
 
@@ -220,6 +221,7 @@ class PNTState:
                 alpha = max(alpha, v)
 
             if v >= beta:
+                prune_count += len(state.next_possible_tokens()) - i
                 return v, move
         return v, move
 
@@ -232,20 +234,20 @@ class PNTState:
         :param beta: The current value of beta
         :return: The best move a given player can make, along with its heuristic value
         """
-        global states_visited, states_evaluated, depth_reached
+        global states_visited, states_evaluated, depth_reached, prune_count
 
         if depth_reached < state.current_depth <= state.max_depth:
             depth_reached = state.current_depth
 
         if state.current_depth <= state.max_depth:
-            print("#### MIN VALUE ####")
-            print('successors:', state.next_possible_tokens())
+            # print("#### MIN VALUE ####")
+            # print('successors:', state.next_possible_tokens())
             temp = [i for i in range(1, state.total_tokens + 1)]
             for i in state.taken_tokens:
                 temp.remove(i)
-            print('tokens left:', " ".join(str(x) for x in temp))
+            # print('tokens left:', " ".join(str(x) for x in temp))
             states_visited.append(temp)
-            print()
+            # print()
 
         if (state.is_terminal() and state.current_depth <= state.max_depth) or state.current_depth == state.max_depth:
             states_evaluated.append(state)
@@ -256,7 +258,7 @@ class PNTState:
         v = float('inf')
         move = None
 
-        for token in state.next_possible_tokens():
+        for i, token in enumerate(state.next_possible_tokens(), start=1):
 
             v2, a2 = state.max_value(state.result(token), alpha, beta)
 
@@ -265,6 +267,7 @@ class PNTState:
                 beta = min(beta, v)
 
             if v <= alpha:
+                prune_count += len(state.next_possible_tokens()) - i
                 return v, move
         return v, move
 

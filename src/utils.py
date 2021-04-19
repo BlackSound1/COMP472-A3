@@ -36,8 +36,8 @@ def to_int_list(string: str):
     return list(map(int, str_list))
 
 
-def generate_output(move: int, value: float, states_visited: [], states_evaluated: [],
-                    depth_reached: int, random: bool):
+def generate_output(state, move: int, value: float, states_visited: [], states_evaluated: [],
+                    depth_reached: int, prune_count: int, random: bool):
     global output_counter
 
     # Nb of children nodes visited / Nb of parent nodes
@@ -47,13 +47,19 @@ def generate_output(move: int, value: float, states_visited: [], states_evaluate
     else:
         branching_factor = (len(states_visited) - 1) / (len(states_visited) - len(states_evaluated))
 
-    output_string = f'Move: {move}\n' \
+    output_string = str(state)
+    output_string += f'\n\nMove: {move}\n' \
                     f'Value: {value}\n' \
                     f'Number of Nodes Visited: {len(states_visited)}\n' \
                     f'Number of Nodes Evaluated: {len(states_evaluated)}\n' \
                     f'Max Depth Reached: {depth_reached}\n' \
-                    f'Avg Effective Branching Factor: {branching_factor}\n'
+                    f'Avg Effective Branching Factor: {branching_factor}\n' \
+                    f'Prune Count: {prune_count}\n\n'
     print(output_string)
+
+    output_string += '--- Evaluated Nodes ---\n\n'
+    for state in states_evaluated:
+        output_string += str(state) + f'\n{state.static_board_evaluation()}\n\n'
 
     if random:
         directory = f'../output/random'
