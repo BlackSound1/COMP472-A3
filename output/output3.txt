@@ -1,6 +1,121 @@
+PNT State
+Total tokens: 10
+Num taken token: 3
+Tokens taken: [4, 2, 6]
+Max Depth: 4
+Current Depth: 0
+
 Move: 1
 Value: 1.0
 Number of Nodes Visited: 25
 Number of Nodes Evaluated: 13
 Max Depth Reached: 4
 Avg Effective Branching Factor: 2.0
+Prune Count: 2
+
+--- Evaluated Nodes ---
+
+PNT State
+Total tokens: 10
+Num taken token: 6
+Tokens taken: [4, 2, 6, 1, 3, 9]
+Max Depth: 4
+Current Depth: 3
+-1.0
+
+PNT State
+Total tokens: 10
+Num taken token: 6
+Tokens taken: [4, 2, 6, 1, 5, 10]
+Max Depth: 4
+Current Depth: 3
+-1.0
+
+PNT State
+Total tokens: 10
+Num taken token: 5
+Tokens taken: [4, 2, 6, 1, 7]
+Max Depth: 4
+Current Depth: 2
+1.0
+
+PNT State
+Total tokens: 10
+Num taken token: 5
+Tokens taken: [4, 2, 6, 1, 8]
+Max Depth: 4
+Current Depth: 2
+1.0
+
+PNT State
+Total tokens: 10
+Num taken token: 6
+Tokens taken: [4, 2, 6, 1, 9, 3]
+Max Depth: 4
+Current Depth: 3
+-1.0
+
+PNT State
+Total tokens: 10
+Num taken token: 6
+Tokens taken: [4, 2, 6, 1, 10, 5]
+Max Depth: 4
+Current Depth: 3
+-1.0
+
+PNT State
+Total tokens: 10
+Num taken token: 7
+Tokens taken: [4, 2, 6, 3, 1, 5, 10]
+Max Depth: 4
+Current Depth: 4
+1.0
+
+PNT State
+Total tokens: 10
+Num taken token: 6
+Tokens taken: [4, 2, 6, 3, 1, 7]
+Max Depth: 4
+Current Depth: 3
+-1.0
+
+PNT State
+Total tokens: 10
+Num taken token: 6
+Tokens taken: [4, 2, 6, 3, 1, 8]
+Max Depth: 4
+Current Depth: 3
+-1.0
+
+PNT State
+Total tokens: 10
+Num taken token: 6
+Tokens taken: [4, 2, 6, 3, 1, 9]
+Max Depth: 4
+Current Depth: 3
+-1.0
+
+PNT State
+Total tokens: 10
+Num taken token: 7
+Tokens taken: [4, 2, 6, 3, 1, 10, 5]
+Max Depth: 4
+Current Depth: 4
+1.0
+
+PNT State
+Total tokens: 10
+Num taken token: 7
+Tokens taken: [4, 2, 6, 3, 9, 1, 5]
+Max Depth: 4
+Current Depth: 4
+-0.7
+
+PNT State
+Total tokens: 10
+Num taken token: 7
+Tokens taken: [4, 2, 6, 3, 9, 1, 7]
+Max Depth: 4
+Current Depth: 4
+1.0
+

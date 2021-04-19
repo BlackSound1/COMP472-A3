@@ -1,11 +1,11 @@
 PNT State
-Total tokens: 3
-Num taken token: 0
-Tokens taken: []
+Total tokens: 10
+Num taken token: 5
+Tokens taken: [3, 1, 8, 4, 2]
 Max Depth: inf
 Current Depth: 0
 
-Move: 1
+Move: 6
 Value: -1.0
 Number of Nodes Visited: 4
 Number of Nodes Evaluated: 2
@@ -16,18 +16,18 @@ Prune Count: 0
 --- Evaluated Nodes ---
 
 PNT State
-Total tokens: 3
-Num taken token: 2
-Tokens taken: [1, 2]
+Total tokens: 10
+Num taken token: 6
+Tokens taken: [3, 1, 8, 4, 2, 6]
 Max Depth: inf
-Current Depth: 2
+Current Depth: 1
 -1.0
 
 PNT State
-Total tokens: 3
-Num taken token: 2
-Tokens taken: [1, 3]
+Total tokens: 10
+Num taken token: 7
+Tokens taken: [3, 1, 8, 4, 2, 10, 5]
 Max Depth: inf
 Current Depth: 2
--1.0
+1.0
 

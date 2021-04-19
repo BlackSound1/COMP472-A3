@@ -1,0 +1,41 @@
+PNT State
+Total tokens: 8
+Num taken token: 3
+Tokens taken: [3, 1, 2]
+Max Depth: inf
+Current Depth: 0
+
+Move: 6
+Value: -1.0
+Number of Nodes Visited: 6
+Number of Nodes Evaluated: 3
+Max Depth Reached: 2
+Avg Effective Branching Factor: 1.6666666666666667
+Prune Count: 0
+
+--- Evaluated Nodes ---
+
+PNT State
+Total tokens: 8
+Num taken token: 5
+Tokens taken: [3, 1, 2, 4, 8]
+Max Depth: inf
+Current Depth: 2
+1.0
+
+PNT State
+Total tokens: 8
+Num taken token: 4
+Tokens taken: [3, 1, 2, 6]
+Max Depth: inf
+Current Depth: 1
+-1.0
+
+PNT State
+Total tokens: 8
+Num taken token: 5
+Tokens taken: [3, 1, 2, 8, 4]
+Max Depth: inf
+Current Depth: 2
+1.0
+
