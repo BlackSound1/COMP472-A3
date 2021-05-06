@@ -1,6 +1,6 @@
-# COMP472-A3
+# PNT
 
-## Link to repository: https://github.com/BlackSound1/COMP472-A3
+## Link to repository: https://github.com/BlackSound1/PNT
 
 There are 3 main ways to use this program. In the `main()` function, there are 3 functions. 
 Each of these represents a different 'mode' the software can run in. To use each mode, make sure that
@@ -33,3 +33,18 @@ This software does indeed use the `..` character sequence to shorten path names.
 it is advisable to replace these relative path names with absolute path names.
 Of special importance is the `directory` variable in the `generate_output()` function definition in `utils.py`,
 as it is this `directory` variable which directly interacts with `os.makedirs()`.
+
+# How to Play
+
+The game starts with n numbered-tokens 1, 2, 3, ..., n. Players take turns removing one of the remaining
+numbered-tokens. At a given turn there are some restrictions on which numbers (i.e., tokens) are legal
+candidates to be taken. The restrictions are: 
+ 
+* At the first move, the first player must choose an odd-numbered token that is strictly less than n/2. 
+For example, if n = 7 (n/2 = 3.5), the legal numbers for the first move are 1 and 3. 
+If n = 6 (n/2 = 3), the only legal number for the first move is 1.  
+
+* At subsequent moves, players alternate turns. The token number that a player can take must be a
+multiple or factor of the last move (note: 1 is a factor of all other numbers). Also, this number may not
+be one of those that has already been taken. After a token is taken, the number is saved as the new last
+move. If a player cannot take a token, he/she loses the game.  
